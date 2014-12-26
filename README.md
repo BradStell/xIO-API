@@ -29,7 +29,7 @@ npm install http
 4) This end point has a table containing information about the API's functionality.<br>  
 
 ### Notes
-This module was not built with eclipse, rather I built it from scratch with just nodejs.  It currently has no database functionality. I understand this will be the end goal. However, since we do not have our own densely populated database, I have routed the xIO API directly to its corresponding repository API call.
+This module was not built with express, rather I built it from scratch with just nodejs.  It currently has no database functionality. I understand this will be the end goal. However, since we do not have our own densely populated database, I have routed the xIO API directly to its corresponding repository API call.
 
 Also, This API currently only works with a local setup.  If this is what you are looking for, I will start to implement a cloud functionality into the scaffolding. 
 
