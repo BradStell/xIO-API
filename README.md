@@ -23,9 +23,9 @@ npm install request<br>
 npm install http
 
 ### Running API
-1) Open your terminal and get in the directory that you saved the project into.<br>  
-2) run the command 'node index.js'<br> 
-3) Open your favorite browser and head to http://localhost:8888/api<br>   
+1) Open your terminal and get in the directory that you saved the project into.<br>
+2) run the command 'node index.js'<br>
+3) Open your favorite browser and head to http://localhost:8888/api<br> 
 4) This end point has a table containing information about the API's functionality.<br>  
 
 ### Notes
