@@ -16,10 +16,10 @@ Release Date: 12/26/2014
 
 
 ### npm modules
-If not already on your machine..
-npm install oauth-request
-npm install octonode
-npm install request
+If not already on your machine.."\n"
+npm install oauth-request<br>
+npm install octonode"<br>"
+npm install request'\n'
 npm install http
 
 ### Running API
