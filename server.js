@@ -3,12 +3,11 @@
  */
 var http = require("http");
 var url = require("url");
+var host = process.env.VCAP_APP_HOST || 'localhost';
+var port = process.env.VCAP_APP_PORT || 8888;
 
 // Servers start method
 function start(route, handle) {
-	
-	// Port to listen on
-	var port = 8888;
 	
 	// Create a server and listen on specified port
 	// When a 'ping' comes in, execute the anonymous function
@@ -27,7 +26,7 @@ function start(route, handle) {
 			route(handle, pathname, query, response);
 		}
 		
-	}).listen(port);
+	}).listen(port, host);
 	
 	console.log("Server Started: Listening on port " + port);
 }
