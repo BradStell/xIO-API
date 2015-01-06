@@ -80,9 +80,13 @@ function stackUser(response, query) {
 	var userTags;
 	var sendToWebpage = '';
 	var name = querystring.parse(query)["name"];
+	
+	// In case the user includes the '{' and '}' characters, remove them
+	name = name.replace("{", "").replace("}", "");
+		
 	var urlUser = "http://api.stackexchange.com/2.2/users?order=desc&sort=reputation&inname=" + name + "&site=stackoverflow";
 	
-	console.log("\nRequest handler 'stackUser' was called.\nQuerying: " + name);
+	console.log("\nRequest handler 'stackUser' was called.\nQuerying: " + name + "\n");
 	
 	// Calling the gzip function declared above
 	getGzipped(urlUser, function(err, data) {
@@ -129,9 +133,9 @@ function stackUser(response, query) {
 	           		userTags += jTagData.items[i].name + " ";
 	           	}    	 
            	
-	            jdata.tags = userTags;    
+	            jdata.tags = userTags;	            
 	            
-	            sendToWebpage = JSON.stringify(jdata);
+	            sendToWebpage = JSON.stringify(jdata, null, 2);
 	            
 	            response.writeHead(200, {"Content-Type": "text/plain"});
 	        	response.write(sendToWebpage);
@@ -149,6 +153,10 @@ function stackId(response, query) {
 	var userTags;
 	var sendToWebpage = '';
 	var userId = querystring.parse(query)["id"];
+	
+	// In case the user includes the '{' and '}' characters, remove them
+	userId = userId.replace("{", "").replace("}", "");
+	
 	var urlId = "http://api.stackexchange.com/2.2/users/" + userId + "?order=desc&sort=reputation&site=stackoverflow";
 	
 	console.log("\nRequest handler 'stackId' was called.\n\nQuerying: " + userId + "\n");
@@ -198,7 +206,7 @@ function stackId(response, query) {
            	
 	            jdata.tags = userTags;    
 	            
-	            sendToWebpage = JSON.stringify(jdata);
+	            sendToWebpage = JSON.stringify(jdata, null, 2);
 	            
                 response.writeHead(200, {"Content-Type": "text/plain"});
                 response.write(sendToWebpage);
@@ -212,8 +220,14 @@ function stackId(response, query) {
 function bitbucket(response, query) {
 	
 	var name = querystring.parse(query)["name"];
+	
+	// In case the user includes the '{' and '}' characters, remove them
+	name = name.replace("{", "").replace("}", "");
+	
 	var url = 'https://bitbucket.org/api/1.0/users/' + name;	
 	var sendToWebpage = '';
+	
+	console.log("\nRequest handler 'bitbucket' was called.\nQuerying: " + name + "\n");
 	
 	request(url, function (error, res, body) {
 		if (!error && res.statusCode === 200) {			    
@@ -226,7 +240,7 @@ function bitbucket(response, query) {
 		    jbody.usingOauth = "No";
 		    jbody.source = 'bitbucket';
 
-		    sendToWebpage = JSON.stringify(jbody);
+		    sendToWebpage = JSON.stringify(jbody, null, 2);
 
             response.writeHead(200, {"Content-Type": "text/plain"});
             response.write(sendToWebpage);
@@ -251,6 +265,12 @@ function bitbucketOath(response, query) {
     var publicKey = querystring.parse(query)["public"];
     var secretKey = querystring.parse(query)["secret"];
     
+    // In case the user includes the '{' and '}' characters, remove them
+    name = name.replace("{", "").replace("}", "");
+    publicKey = publicKey.replace("{", "").replace("}", "");
+    secretKey = secretKey.replace("{", "").replace("}", "");
+    
+    console.log("\nRequest handler 'bitbucketOath' was called.\nQuerying: " + name + " " + publicKey + " " + secretKey + "\n");
     
     // Users' two keys
     var bit = OAuth({
@@ -283,7 +303,7 @@ function bitbucketOath(response, query) {
 	    	body.usingOauth = 'Yes';
 	    	body.source = 'bitbucket';	        
 	        
-	    	var stringBody = JSON.stringify(body);
+	    	var stringBody = JSON.stringify(body, null, 2);
 	    	
 	    	response.writeHead(200, {"Content-Type": "text/plain"});
 	        response.write(stringBody);
@@ -302,7 +322,13 @@ function githubUser(response, query) {
 	
 	var client = github.client();
 	var name = querystring.parse(query)["name"];
+	
+	// In case the user includes the '{' and '}' characters, remove them
+	name = name.replace("{", "").replace("}", "");
+	
 	var url = "/users/" + name;
+	
+	console.log("\nRequest handler 'githubUser' was called.\nQuerying: " + name + "\n");
 	
 	client.get(url, {}, function (err, status, jsonbody, headers) {
 		if (err) {
@@ -313,7 +339,7 @@ function githubUser(response, query) {
 	    console.log('error = ' + err + ' status = ' + status + ' headers = ' + headers);        
         jsonbody.source = 'github';
         
-        var body = JSON.stringify(jsonbody);
+        var body = JSON.stringify(jsonbody, null, 2);
         
         response.writeHead(200, {"Content-Type": "text/plain"});
         response.write(body);
@@ -325,8 +351,13 @@ function githubUser(response, query) {
 function launchpad(response, query) {	 
     
     var name = querystring.parse(query)["name"];
+    
+    // In case the user includes the '{' and '}' characters, remove them
+    name = name.replace("{", "").replace("}", "");
+    
     var url = 'https://api.launchpad.net/1.0/~' + name;
     
+    console.log("\nRequest handler 'launchpad' was called.\nQuerying: " + name + "\n");
     
     // The request method that will make the http call to the bitbucket api for accessing a username
     request(url, function (error, res, body) {
@@ -339,7 +370,7 @@ function launchpad(response, query) {
 		    jbody.usingOauth = "No";
 		    jbody.source = 'launchpad';
 		    
-		    var sbody = JSON.stringify(jbody);
+		    var sbody = JSON.stringify(jbody, null, 2);
 		    
 		    response.writeHead(200, {"Content-Type": "text/plain"});
 		    response.write(sbody);
@@ -359,8 +390,13 @@ function launchpad(response, query) {
 function sourceforge(response, query) {
 	    
     var name = querystring.parse(query)["name"];
+    
+    // In case the user includes the '{' and '}' characters, remove them
+    name = name.replace("{", "").replace("}", "");
+    
     var url = 'http://www.sourceforge.net/rest/u/' + name;
     
+    console.log("\nRequest handler 'sourceforge' was called.\nQuerying: " + name + "\n");
     
     // API REST http call to the sourceforge username endpoint
     request(url, function (error, res, body) {
@@ -371,7 +407,7 @@ function sourceforge(response, query) {
     		
     		jbody.source = "sourceforge";
     		
-    		var sbody = JSON.stringify(jbody);
+    		var sbody = JSON.stringify(jbody, null, 2);
     		
     		response.writeHead(200, {"Content-Type": "text/plain"});
     	    response.write(sbody);
@@ -392,7 +428,9 @@ function apiRef(response, query) {
 		"<html>" +
 		"<head><title>API Reference Material</title>" +
 		"<style>" +
+		"{background-color:lightgrey}" +
 		"table {width:90%}" +
+		"p {width:90%;font-family:courier new}" +
 		"table, th, td {border:1px solid black;border-collapse:collapse;}" +
 		"td {padding:15px;text-align:left;width:33.33%}" +
 		"th {padding:20px;text-align:center;width:33.33%}" +
@@ -403,6 +441,11 @@ function apiRef(response, query) {
 		"</head>" +
 		"<body>" +
 		"<h1>API Reference Material</h1>" +
+		"<h3>Instructions</h3>" +
+		"<p>Each of the following endpoints should be appended onto the end of the programs url.  The program url is the folowing:" +
+		" 'xioapi.mybluemix.net'.  For example - to search for a user with the username 'commonsware' in stackoverflow, type the following" +
+		" url into your web browsers url search bar: " +
+		" 'xioapi.mybluemix.net/GET/stackoverflow/users?name=commonsware' (without the quotes).</p>" +
 		"<table id='t1'>" +
 		" <tr>" +
 		"  <th>API Endpoints</th>" +
@@ -410,43 +453,43 @@ function apiRef(response, query) {
 		"  <th>Description</th>" +
 		" </tr>" +
 		" <tr>" +
-		"  <td>http://localhost:8888/GET/stackoverflow/users?name={name}</td>" +
+		"  <td>/GET/stackoverflow/users?name={name}</td>" +
 		"  <td>Replace '{name}' with the name of the person you wish to look up." +
 		"  <td>This endpoint will retrieve a JSON object from Stackoverflow based on a users account information." +
 		"  The object will be in String form, so you will need to handle the data format on your end.</td>" +		
 		" </tr>" +
 		" <tr>" +
-		"  <td>http://localhost:8888/GET/stackoverflow/id?id={idNumber}</td>" +
+		"  <td>/GET/stackoverflow/id?id={idNumber}</td>" +
 		"  <td>Replace '{idNumber}' with the id of the person you wish to look up</td>" +
 		"  <td>This endpoint will retrieve a JSON object from Stackoverflow based on a users account information." +
 		"  The object will be in String form, so you will need to handle the data format on your end.</td>" +
 		" </tr>" +
 		" <tr>" +
-		"  <td>http://localhost:8888/GET/bitbucket/users?name={name}</td>" +
+		"  <td>/GET/bitbucket/users?name={name}</td>" +
 		"  <td>Replace '{name}' with the name of the person you wish to look up</td>" +
 		"  <td>This endpoint will retrieve a JSON object from Bitbucket based on a users public account information." +
 		"  The object will be in String form, so you will need to handle the data format on your end.</td>" +
 		" </tr>" +
 		" <tr>" +
-		"  <td>http://localhost:8888/GET/bitbucket/users/oath?name={name}</td>" +
+		"  <td>/GET/bitbucket/users/oath?name={name}&public={public key}&secret={secret key}</td>" +
 		"  <td>Replace '{name}' with the name of the person you wish to look up</td>" +
 		"  <td>This endpoint will retrieve a JSON object from Bitbucket based on a users private and public account information." +
 		"  The object will be in String form, so you will need to handle the data format on your end.</td>" +
 		" </tr>" +
 		" <tr>" +
-		"  <td>http://localhost:8888/GET/github/users?name={name}</td>" +
+		"  <td>/GET/github/users?name={name}</td>" +
 		"  <td>Replace '{name}' with the name of the person you wish to look up</td>" +
 		"  <td>This endpoint will retrieve a JSON object from Github based on a users private account information." +
 		"  The object will be in String form, so you will need to handle the data format on your end.</td>" +
 		" </tr>" +
 		" <tr>" +
-		"  <td>http://localhost:8888/GET/launchpad/users?name={name}</td>" +
+		"  <td>/GET/launchpad/users?name={name}</td>" +
 		"  <td>Replace '{name}' with the name of the person you wish to look up</td>" +
 		"  <td>This endpoint will retrieve a JSON object from Launchpad based on a users public account information." +
 		"  The object will be in String form, so you will need to handle the data format on your end.</td>" +
 		" </tr>" +
 		" <tr>" +
-		"  <td>http://localhost:8888/GET/sourceforge/users?name={name}</td>" +
+		"  <td>/GET/sourceforge/users?name={name}</td>" +
 		"  <td>Replace '{name}' with the name of the person you wish to look up</td>" +
 		"  <td>This endpoint will retrieve a JSON object from Sourceforge based on a users public account information." +
 		"  The object will be in String form, so you will need to handle the data format on your end.</td>" +
