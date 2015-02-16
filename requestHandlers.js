@@ -442,7 +442,7 @@ function apiRef(response, query) {
 		"<body>" +
 		"<h1>API Reference Material</h1>" +
 		"<h3>Instructions</h3>" +
-		"<p>Each of the following endpoints should be appended onto the end of the programs url.  The program url is the folowing:" +
+		"<p>Each of the following endpoints should be appended onto the end of the programs url.  The program url is the following:" +
 		" 'xioapi.mybluemix.net'.  For example - to search for a user with the username 'commonsware' in stackoverflow, type the following" +
 		" url into your web browsers url search bar: " +
 		" 'xioapi.mybluemix.net/GET/stackoverflow/users?name=commonsware' (without the quotes).</p>" +
@@ -456,7 +456,9 @@ function apiRef(response, query) {
 		"  <td>/GET/stackoverflow/users?name={name}</td>" +
 		"  <td>Replace '{name}' with the name of the person you wish to look up." +
 		"  <td>This endpoint will retrieve a JSON object from Stackoverflow based on a users account information." +
-		"  The object will be in String form, so you will need to handle the data format on your end.</td>" +		
+		"  The object will be in String form, so you will need to handle the data format on your end.  <bold>Important:</bold>" +
+		"  An ambiguous name, such as 'brad', will return back EVERY username with the word 'brad' in it.  If a username is ambiguous," +
+		" please search by ID instead.</td>" +		
 		" </tr>" +
 		" <tr>" +
 		"  <td>/GET/stackoverflow/id?id={idNumber}</td>" +
